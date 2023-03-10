@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <link href="css/practice.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div>
+      <button onclick="listRosTopics()">List Topics</button>
+      <select id="selectTopic">
+
+      </select>
+      <button onclick="addTopic()">Update</button>
+    </div>
+    <div>
+      <button onclick="map3d()">Click for Map</button>
+      <h2>Map:</h2>
+      <div id="map"></div>
+    </div>
+  </body>
+    <!-- script section -->
+    <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+    <script src="./js/nipplejs.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script src="./js/practice.js"></script>
+    <script src="./js/ros3d.js"></script>
+    <script src="https://static.robotwebtools.org/threejs/r89/three.js"></script>
+  </html>

@@ -1,0 +1,78 @@
+body{
+    margin: 0;
+}
+.title-header{
+    text-align: center;
+}
+#connect-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 1%;
+}
+#connect-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#camera_stream{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    visibility: hidden;
+}
+#camera_source{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 1%;
+    visibility: hidden;
+}
+#controller_area{
+    text-align: center;
+    width: 80%;
+    margin:auto;
+    height: 180px;
+    margin-bottom: 20px;
+    visibility: hidden;
+}
+#joystick_container{
+    position: static;
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    margin-top: 5%;
+}
+#listTopics{
+    visibility: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-top: 100px;
+}
+.pointCloudArea{
+    visibility: hidden;
+    display: grid;
+    justify-content: center;
+    margin-top: 150px;
+}
+.sensorData{
+    text-align: center;
+    margin: 5px auto;
+}
+.sensorData table{
+    margin: 5px auto;
+}
+.sensorData table, th, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.sensorData th,td{
+    padding: 5px;
+    text-align: center;
+}
