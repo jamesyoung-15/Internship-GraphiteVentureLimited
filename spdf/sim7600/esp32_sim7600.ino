@@ -3,6 +3,8 @@
 
 #define RXD2 16
 #define TXD2 17
+#define RXD1 18
+#define TXD1 19
 
 void setup() {
   // put your setup code here, to run once:
