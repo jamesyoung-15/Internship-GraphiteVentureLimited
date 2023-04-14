@@ -173,3 +173,11 @@ String get_time()
   Serial.println(s);
   return s;
 }
+
+// reset module
+void reset_module()
+{
+  Serial2.println("AT+CRESET");
+  print_serial();
+  delay(35000);
+}
