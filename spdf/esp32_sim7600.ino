@@ -13,24 +13,29 @@ void setup() {
   delay(500);
   // start software serial2, for testing
   Serial2.begin (115200, SERIAL_8N1, RXD2, TXD2);
+  while(!Serial2){;}
   delay(5000);
   // Example: Write AT command and get response, should return OK in serial
   Serial2.println("AT");
   print_serial();
   delay(500);
-  // disconnect_aws();
-  delay(500);
+
+  // disconnect from aws
+  disconnect_aws();
+
+  // reset module
+  reset_module();
 
 
 
   // Configure SSL
   configure_ssl();
-  delay(1000);
+  delay(2000);
   // Connect AWS
   connect_aws();
-  delay(1000);
-
+  print_serial();
   delay(2000);
+
 }
 
 void loop() {
@@ -67,18 +72,25 @@ void configure_ssl()
 
   // Set the SSL version of the first SSL context
   Serial2.println("AT+CSSLCFG=\"sslversion\",0,4");
+  delay(100);
 
   // Set the authentication mode to verify server and client
   Serial2.println("AT+CSSLCFG=\"authmode\",0,2");
-
+  delay(100);
   // Set the server root CA of the first SSL contex
   Serial2.println("AT+CSSLCFG=\"cacert\",0,\"cacert.pem\"");
+  delay(100);
 
   // Set the client certificate of the first SSL context
   Serial2.println("AT+CSSLCFG=\"clientcert\",0,\"clientcert.pem\"");
-    
+  delay(100);
+
   // Set the client key of the first SSL context
   Serial2.println("AT+CSSLCFG=\"clientkey\",0,\"clientkey.pem\"");
+  delay(100);
+  
+  // open network
+  Serial2.println("AT+NETOPEN");
 
 }
 
@@ -88,24 +100,23 @@ void connect_aws()
   // start MQTT service
   Serial2.println("AT+CMQTTSTART");
   print_serial();
-  delay(100);
+  delay(4000);
 
   // Acquire one client which will connect to a SSL/TLS MQTT server
-  Serial2.println("AT+CMQTTACCQ=0,\"client01\",1");
+  Serial2.println("AT+CMQTTACCQ=0,\"sim_client01\",1");
   print_serial();
-  delay(100);
+  delay(4000);
 
   // Set the first SSL context to be used in the SSL connection
   Serial2.println("AT+CMQTTSSLCFG=0,0");
   print_serial();
-  delay(100);
+  delay(4000);
 
   // Connect to a MQTT server, in this case aws
-  Serial.println("AT+CMQTT Connect");
+  // Serial.println("AT+CMQTT Connect");
   Serial2.println("AT+CMQTTCONNECT=0,\"tcp://a5sswhj5ru4gy-ats.iot.us-east-2.amazonaws.com:8883\",60,1");
   print_serial();
-  print_serial();
-  delay(2000);
+  delay(5000);
 }
 
 void disconnect_aws()
@@ -124,6 +135,13 @@ void disconnect_aws()
   Serial2.println("AT+CMQTTSTOP");
   print_serial();
   delay(50);
+}
+
+void reset_module()
+{
+  Serial2.println("AT+CRESET");
+  print_serial();
+  delay(35000);
 }
 
 // Create MQTT topic, create json, send payload
@@ -161,7 +179,8 @@ void send_data()
   delay(300);
 
   // Publish message
-  Serial2.println("AT+CMQTTPUB=0,1,60");  
+  Serial2.println("AT+CMQTTPUB=0,1,60");
+  print_serial();  
 }
 
 // compare response to expected response
@@ -172,12 +191,4 @@ String get_time()
   String s = temp.substring(19,36);
   Serial.println(s);
   return s;
-}
-
-// reset module
-void reset_module()
-{
-  Serial2.println("AT+CRESET");
-  print_serial();
-  delay(35000);
 }
