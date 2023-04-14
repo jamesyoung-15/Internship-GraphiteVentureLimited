@@ -7,23 +7,25 @@
 void setup() {
   // put your setup code here, to run once:
 
-  // Start hardware serial
+  // Start hardware serial. 
   Serial.begin(115200);
-  while (!Serial) {; } // wait for serial port to connect. Needed for native USB port only
+  while (!Serial) {; } // wait for serial port to connect
   delay(500);
-  // start software serial2, for testing
+
+  // Start software Serial2. For testing where hardware serial is usb to computer and software serial is ESP32 to SIM module
   Serial2.begin (115200, SERIAL_8N1, RXD2, TXD2);
   while(!Serial2){;}
   delay(5000);
+
   // Example: Write AT command and get response, should return OK in serial
   Serial2.println("AT");
   print_serial();
   delay(500);
 
-  // disconnect from aws
+  // Disconnect from AWS if module still connected
   disconnect_aws();
 
-  // reset module
+  // Reset module if needed
   reset_module();
 
 
@@ -31,6 +33,7 @@ void setup() {
   // Configure SSL
   configure_ssl();
   delay(2000);
+
   // Connect AWS
   connect_aws();
   print_serial();
@@ -119,6 +122,70 @@ void connect_aws()
   delay(5000);
 }
 
+// Create MQTT topic, create json with relevant sensor data, send payload to AWS
+// Json will look something like this:
+// {
+//   "data": {
+//     "pH": 8.96,
+//     "EC": 3.67,
+//     "DO": 2.04,
+//     "Temp": 24.2,
+//     "DateTime": "23/04/14,12:18:55"
+//   }
+// }
+void send_data()
+{
+  // Set the topic for the PUBLISH message
+  String topic = "sfdf/client01";
+  Serial.println("AT+CMQTTTOPIC=0,"+String(topic.length()));
+  Serial2.println("AT+CMQTTTOPIC=0,"+String(topic.length()));
+  delay(20);
+  Serial2.println(topic); // inputs topic name
+  print_serial();
+  delay(300);
+
+  // create json document
+   StaticJsonDocument<200> doc;
+
+   // create nested json object data
+  JsonObject data = doc.createNestedObject("data");
+
+  // add sensor data to object data
+  data["pH"] = 8.96;
+  data["EC"] = 3.67;
+  data["DO"] = 2.04;
+  data["Temp"] = 24.2;
+  data["DateTime"] = get_time();
+  
+  // convert json to string
+  String message;
+  serializeJson(doc, message);
+  Serial.println("\n"+message);
+
+  // Set the payload for the PUBLISH message
+  Serial2.println("AT+CMQTTPAYLOAD=0," + String(message.length())); 
+  delay(20);
+  Serial2.println(message); // input json message to be sent
+  print_serial();
+  delay(300);
+
+  // Publish message
+  Serial2.println("AT+CMQTTPUB=0,1,60");
+  print_serial();  
+}
+
+// Returns string of current time in UTC+8 in format of “YY/MM/DD,HH:MM:SS” (eg. 23/04/14,12:42:16)
+String get_time()
+{
+  // Get real time clock management of SIM module, full format is “yy/MM/dd,hh:mm:ss±zz”, eg.(+CCLK: “08/11/28,12:30:35+32”)
+  Serial2.println("AT+CCLK?");
+  String temp = get_response();
+  // Cconcatenate response to format of: YY/MM/DD, HH:MM:SS (eg. 23/04/14,12:42:16)
+  String time = temp.substring(19,36);
+  Serial.println(time);
+  return time;
+}
+
 void disconnect_aws()
 {
   // disconnect from server
@@ -142,53 +209,4 @@ void reset_module()
   Serial2.println("AT+CRESET");
   print_serial();
   delay(35000);
-}
-
-// Create MQTT topic, create json, send payload
-void send_data()
-{
-  // Set the topic for the PUBLISH message
-  String topic = "sfdf/client01";
-  Serial.println("AT+CMQTTTOPIC=0,"+String(topic.length()));
-  Serial2.println("AT+CMQTTTOPIC=0,"+String(topic.length())); // 21 is length of topic name
-  delay(20);
-  Serial2.println(topic); // input topic name
-  print_serial();
-  delay(300);
-
-  // create json document
-   StaticJsonDocument<200> doc;
-   // create nested json object data
-  JsonObject data = doc.createNestedObject("data");
-  // add sensor data to object data
-  data["pH"] = 8.96;
-  data["EC"] = 3.67;
-  data["DO"] = 2.04;
-  data["Temp"] = 24.2;
-  data["DateTime"] = get_time();
-  // convert json to string
-  String message;
-  serializeJson(doc, message);
-  Serial.println("\n"+message);
-
-  // Set the payload for the PUBLISH message
-  Serial2.println("AT+CMQTTPAYLOAD=0," + String(message.length())); 
-  delay(20);
-  Serial2.println(message); // send payload
-  print_serial();
-  delay(300);
-
-  // Publish message
-  Serial2.println("AT+CMQTTPUB=0,1,60");
-  print_serial();  
-}
-
-// compare response to expected response
-String get_time()
-{
-  Serial2.println("AT+CCLK?");
-  String temp = get_response();
-  String s = temp.substring(19,36);
-  Serial.println(s);
-  return s;
 }
