@@ -291,3 +291,64 @@ double read_temp ()
     return value_temp;
 }
 
+
+// changes LED based on parameter passed
+// parameter should be 'o' for off, 'r' for red, 'y' for yellow, 'g' for green
+void led_changestat (char led_color)
+{
+    // Set switch case for LED status
+    // led_stat : 0 = Off; 1 = Red; 2 = Yellow; 3 = Green
+    switch (led_color)
+    {
+        case 'o':
+        digitalWrite (AIN1, !HIGH);
+        digitalWrite (AIN2, !HIGH);
+        digitalWrite (BIN1, !HIGH);
+        digitalWrite (BIN2, !HIGH);
+        led_stat = 0;
+        break;
+
+        case 'r':
+        digitalWrite (AIN1, HIGH);
+        digitalWrite (AIN2, !HIGH);
+        digitalWrite (BIN1, !HIGH);
+        digitalWrite (BIN2, !HIGH);
+        led_stat = 1;
+        break;
+
+        case 'y':
+        digitalWrite (AIN1, !HIGH);
+        digitalWrite (AIN2, HIGH);
+        digitalWrite (BIN1, !HIGH);
+        digitalWrite (BIN2, !HIGH);
+        led_stat = 2;
+        break;
+
+        case 'g':
+        digitalWrite (AIN1, !HIGH);
+        digitalWrite (AIN2, !HIGH);
+        digitalWrite (BIN1, HIGH);
+        digitalWrite (BIN2, !HIGH);
+        led_stat = 3;
+        break;     
+    }
+}
+
+int led_blink (char led_color, long interval_time)
+{
+    unsigned long cur_millis = millis();
+
+    if (cur_millis - led_prev_mills > interval_time)
+    {
+       led_prev_mills = cur_millis;
+
+       if (led_stat == 0 || led_stat == 99)
+       {
+            led_changestat (led_color);
+       } 
+       else
+       {
+           led_changestat ('o');
+       }
+    }
+}
