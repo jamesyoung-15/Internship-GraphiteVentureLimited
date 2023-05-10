@@ -1,11 +1,11 @@
 #include <ModbusMaster.h>
 #include <ArduinoJson.h>
 
-// Serial 1, pin 16 (U2RX) and 17 (U2TX)
+// Serial 2, pin 16 (U2RX) and 17 (U2TX)
 #define RXD2 16
 #define TXD2 17
 
-// Serial 2, pin 18 (U1RX) and 19 (U1TX)
+// Serial 1, pin 18 (U1RX) and 19 (U1TX)
 #define RXD1 18
 #define TXD1 19
 
@@ -292,8 +292,8 @@ double read_temp ()
 }
 
 
-// changes LED based on parameter passed
-// parameter should be 'o' for off, 'r' for red, 'y' for yellow, 'g' for green
+/*  changes LED based on parameter passed
+    parameter should be 'o' for off, 'r' for red, 'y' for yellow, 'g' for green */
 void led_changestat (char led_color)
 {
     // Set switch case for LED status
