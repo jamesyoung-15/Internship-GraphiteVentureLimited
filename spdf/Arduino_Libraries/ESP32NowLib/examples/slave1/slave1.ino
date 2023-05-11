@@ -1,18 +1,26 @@
-/* 
-    Main reference: https://espressif-docs.readthedocs-hosted.com/projects/arduino-esp32/en/latest/api/espnow.html 
+#include "ESP32NowLib.h"
 
-   << This Device Slave >>
 
-   Flow: Slave
-   Step 1 : ESPNow Init on Slave
-   Step 2 : Update the SSID of Slave with a prefix of `slave`
-   Step 3 : Set Slave in AP mode
-   Step 4 : Register for receive callback and wait for data
-   Step 5 : Once data arrives, print it in the serial monitor
 
-*/
+// Create ESP32 node
+ESP32Now espNode(1);
 
-#include "esp32_now.h"
+
+
+void setup() {
+    Serial.begin(115200);
+    Serial.println("ESPNow Slave Example");
+
+    // Set ESP32 node as slave
+    espNode.ESPNowStartSlave("Slave 1", OnDataRecv);
+
+  
+
+}
+
+void loop() {
+  // Will be listening for messages
+}
 
 // callback when data is recv from Master
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) 
@@ -38,24 +46,4 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
     {
     Serial.println("Command sent was to turn off pump");
     }
-}
-
-// Create ESP32 node
-ESP32Now espNode(1);
-
-
-
-void setup() {
-    Serial.begin(115200);
-    Serial.println("ESPNow/Basic/Slave Example");
-
-    // Set ESP32 node as slave
-    espNode.ESPNowStartSlave("Slave 1", &OnDataRecv);
-
-  
-
-}
-
-void loop() {
-  // Chill
 }
