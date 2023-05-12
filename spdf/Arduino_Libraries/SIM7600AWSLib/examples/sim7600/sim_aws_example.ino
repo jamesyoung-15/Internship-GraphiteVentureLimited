@@ -45,4 +45,20 @@ void loop() {
 
     delay(60000);
 
+    /* 
+     In this example, the ESP32 will be checking for AWS messages and if Serial2 contains the word "response", it means that there was a message from AWS with a command
+     such as "PUMPON". Example of the published AWS message for this is {response: "PUMPON"}. Once it receives AWS message with either "PUMPON" or "PUMPOFF", it will activate
+     function receivedMessage("PUMPON", "All").
+     */
+    aws.checkResponseAWS("response","PUMPON", "PUMPOFF", "All", receivedMessage);
+
+}
+
+// Example of executing a function once it receives message from AWS
+void receivedMessage(String command ,String slaveName)
+{
+    // do something
+    Serial.println("Reached here from AWS message.");
+    Serial.println("Command was: " + command);
+    Seral.println("Send command to: " + slaveName);
 }

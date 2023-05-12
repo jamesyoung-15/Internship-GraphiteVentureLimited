@@ -15,8 +15,10 @@ Library for working with SIM7600 module with ESP32: [SIM7600AWSLib](./spdf/Ardui
 
 Main Arduino code for the SFDF Project using the three libraries above: [sfdf.ino](https://github.com/jamesyoung-15/XDreamVenture-Intern/blob/main/spdf/sfdf.ino)
 
-Documentation: [Link](https://github.com/jamesyoung-15/XDreamVenture-Intern/blob/main/spdf/README.md)
+Documentation: [Link](./spdf/README.md)
 
 
 ## Simple ROS GUI
 Worked on a simple ROS GUI example to control ROS robot with virtual joystick and display camera stream. Mainly uses roslibjs for connecting to ROS and website uses basic HTML, CSS, and javascript.
+
+Documentation: [Link](./ros-gui/README.md)

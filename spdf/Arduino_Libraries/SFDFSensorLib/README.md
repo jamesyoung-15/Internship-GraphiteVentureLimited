@@ -1,5 +1,5 @@
 # SFDF Sensor Library
-This is a library for reading some water sensors data connected through Modbus with RS485 to ESP32. Used three sensors which are pH sensor, dissolved oxygen sensor, and EC sensor. Mainly utilizes ModbusMaster library.
+This is a library for reading some water sensors data connected through Modbus with RS485 to ESP32. Used three sensors which are pH sensor, dissolved oxygen sensor, and EC sensor. Mainly utilizes ModbusMaster library. The sensor documentation are [here](./sensor_info/) (all in Chinese) and we changed the sensor addresses manually with their software.
 
 ## Libraries needed
 Need the ModbusMaster Arduino library.

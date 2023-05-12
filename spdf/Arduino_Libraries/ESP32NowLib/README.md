@@ -3,6 +3,8 @@ This is a library for working with ESP-Now with ESP32 in Arduino IDE. Currently 
 
 This library was tested with 3 ESP32 Dev C modules, with 1 being a master and 2 being slave nodes. Master can send same message to all or just message to one slave. Doesn't need to know the MAC address beforehand as we will set each slave with a SSID name and scan for that name instead.
 
+Current Limitation: Currently this library only supports sending a String if you wish to send another data type like a struct feel free to modify the `sendDataAll()` and `sendDataSingle()` functions in the library.
+
 ## Dependencies
 These headers are used in this library:
 ``` c++
@@ -71,7 +73,7 @@ espNode.ESPNowStartSlave("Slave 01",OnDataRec);
 bool status = espNode.addPeer("Slave 01");
 ```
 
-5. For master node, you can send data to a single node or send to all connected nodes.
+5. For master node, you can send data to a single node or send to all connected nodes. Only supports sending Strings if you wish to send another data type modify these functions.
 ``` C++
 /* Single node */
 // First param is message to send (only very short String messages), second is name/SSID to send to
