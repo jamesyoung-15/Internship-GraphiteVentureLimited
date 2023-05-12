@@ -1,4 +1,6 @@
 # SFDF Project Documentation
+Worked on reading sensor data from various water sensors (eg. pH, DO, etc.) and sending those data to AWS. Sensor data obtained through ESP32 microcontroller and data sent to AWS through a SIM7600G module. The ESP32 can also connect to another ESP32 through ESP-Now and send commands to it with a master-slave connection.
+
 The main overall Arduino code/sketch is [sfdf.ino](./sfdf.ino) (or see below). It uses 3 custom libraries I wrote. More documentation for the usage of each library are inside the README of the libraries.
 
 ## Custom Libraries Written
@@ -17,14 +19,10 @@ Author: Young, James Yang
 
 This example is from Graphite Venture internship SFDF project where we read temperature sensor with Modbus, pass the data to a SIM7600 module then send it to AWS.
 Also can connect and communicate to another ESP32 with ESP-Now.
-The SIM7600 module can also subscribe to topics from AWS and do commands based on message. In this example, the AWS can send a command to turn the pump on and off 
-that is controlled by another ESP32 with ESP-Now connected to this node.
+The SIM7600 module can also subscribe to topics from AWS and do commands based on message. In this example, the AWS can send a command to turn the pump on and off that is controlled by another ESP32 with ESP-Now connected to this node.
 
 Uses mix of own custom libraries and some other custom libraries like ArduinoJson, Modbus, etc. Check libraries for more detail.
-
- */
-
-
+*/
 
 #include <ESP32NowLib.h>
 #include <SFDFSensor.h>

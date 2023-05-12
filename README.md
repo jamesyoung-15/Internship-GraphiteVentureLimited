@@ -2,7 +2,7 @@
 My work during my internship with Graphite Venture Limited as an IoT intern. Most of my work there was to help with developing IoT water sensors but was also assigned various other tasks.
 
 ## SFDF Sensors
-Worked on reading sensor data from various water sensors (eg. pH, DO, etc.) and sending those data to AWS. Sensor data obtained through ESP32 microcontroller and data sent to AWS through a SIM7600G module. The ESP32 can also connect to another ESP32 through ESP-Now and send commands to it with a master-slave connection.
+Worked on reading sensor data from various water sensors (eg. pH, DO, etc.) with ESP32 and sending those data to AWS through SIM7600. The ESP32 can also connect to another ESP32 through ESP-Now and send commands to it.
 
 My work is packaged into these 3 custom Arduino libraries I wrote:
 
