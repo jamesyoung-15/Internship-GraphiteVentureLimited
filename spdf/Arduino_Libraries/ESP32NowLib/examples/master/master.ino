@@ -58,7 +58,6 @@ void loop()
         connectionStatus2 = espNode.addPeer("Slave 2");
         delay(3000);
     }
-
 }
 
 

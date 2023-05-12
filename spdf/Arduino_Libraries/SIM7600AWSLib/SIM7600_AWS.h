@@ -13,7 +13,8 @@ class SIM7600AWS
         Stream* sim7600Port; // The serial port that connects to AWS (eg. Serial2)
         Stream* printSerialPort; // The serial port to view response (eg. Serial)
         unsigned int baudRate;
-        bool is_sending_aws = false;
+        bool is_sending_aws = false; // 
+        bool is_receiving_aws = false; 
         
 
     public:
@@ -87,6 +88,13 @@ class SIM7600AWS
          */
         void disconnectAWS();
 
+        /**!
+         * @brief Handles incoming message from AWS, make sure to subscribe to topic beforehand. This example uses my ESP-Now custom library, feel free to change this function 
+         * @param command is the command to send to another ESP-Now node (eg. "PUMPON" to turn on pump)
+         * @param slaveName is the other ESP-Now SSID name to send to. If slaveName is "All", then will send to all connected ESP-Now peers
+         * @param func1 is self-defined function
+         */
+        void checkResponseAWS(String check, String command1, String command2, String slaveName, void (&func)(String,String));
 
         /* Below are some helper functions  */
 

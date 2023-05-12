@@ -2,24 +2,22 @@
 #define SFDFSENSOR_H
 
 #include <Arduino.h>
-#include "WiFi.h"
-#include <esp_now.h>
-#include <esp_wifi.h>
+#include <ModbusMaster.h>
 
 class sensorNodes
 {
     private:
-        ModbusMaster node_ec;
-        ModbusMaster node_ph;
-        ModbusMaster node_do;
+        ModbusMaster* node_ec;
+        ModbusMaster *node_ph;
+        ModbusMaster *node_do;
     public:
         /**!
          * @brief Constructor initialize the connection to each sensor.
-         * @param  
-         * @param
-         * @param
+         * @param node_ec: Modbus node for EC sensor
+         * @param node_ph: Modbus node for ph sensor
+         * @param node_do: Modbus node for dissolved oxygen sensor
         */
-        sensorNodes(ModbusMaster node_ec,ModbusMaster node_ph,ModbusMaster node_do);
+        sensorNodes(ModbusMaster* node_ec,ModbusMaster *node_ph,ModbusMaster* node_do);
 
         /**!
          * @brief Reads the EC value from the sensor register, unit in uS/cm
@@ -52,7 +50,7 @@ class sensorNodes
          * @param u16ReadAddress address of the first holding register (0x0000..0xFFFF)
          * @return Value of sensor data
          */
-        double readValue(ModbusMaster node, uint16_t u16ReadAddress);
+        double readValue(ModbusMaster* node, uint16_t u16ReadAddress);
         
 };
 

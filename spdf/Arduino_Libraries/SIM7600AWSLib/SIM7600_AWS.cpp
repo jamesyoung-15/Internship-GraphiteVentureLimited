@@ -206,5 +206,31 @@ void SIM7600AWS::disconnectAWS()
   delay(50);
 }
 
+void SIM7600AWS::checkResponseAWS(String check, String command1, String command2, String slaveName, void (&func)(String,String))
+{
+    // if we receive topic from AWS, Serial2 will get message
+    if(sim7600Port->available()>0)
+    {
+        String received = sim7600Port->readString();
+        // AWS payload message will contain response and either ok or error
+        if(received.indexOf(check)>0)
+        {
+            printSerial();
+            printSerialPort->println("Received response");
+
+            // check if the sent message contains some String command, then do some function
+            if(received.indexOf(command1)>0)
+            {
+                func(command1, slaveName);
+            }
+            else if(received.indexOf(command2)>0)
+            {
+                func(command2, slaveName);
+            }
+            
+        }
+    }
+}
+
 
 
